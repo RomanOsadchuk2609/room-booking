@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Room Booking</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <h1>List Of Rooms</h1>
+            <!--/*@thymesVar id="rooms" type="List<com.osadchuk.roman.roombooking.entity.Room>"*/-->
+            <!--/*@thymesVar id="room" type="com.osadchuk.roman.roombooking.entity.Room"*/-->
+            <div th:if="${rooms}" th:each="room : ${rooms}" class="room-info"
+                 th:class="${room.status.toString().equals('FREE')} ? 'room-info' : 'room-info reserved'">
+                <div style="display: flex">
+                    <a th:if="${room.isFree()}" th:href="${'/admin/rooms/delete?id=' + room.id}">
+                        <i class="fa fa-remove" style="margin-right: 10px; color: red"></i>
+                    </a>
+                    <a th:if="${room.isFree()}" th:href="${'/admin/rooms/edit?id=' + room.id}">
+                        <i class="fa fa-pencil" style="margin-right: 10px; color: blue"></i>
+                    </a>
+                    <h5 th:text="${'Room #' + room.number}"></h5>
+                </div>
+                <table>
+                    <tr>
+                        <td style="padding-right: 50px">Amount of person:</td>
+                        <td th:text="${room.amountOfPerson}"></td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td th:text="${room.price + '$'}"></td>
+                    </tr>
+                    <tr>
+                        <td>Price for booking:</td>
+                        <td th:text="${room.bookingPrice + '$'}"></td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td th:text="${room.status}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div align="center" class="col-md-5">
+            <!--/*@thymesVar id="newRoom" type="com.osadchuk.roman.roombooking.model.RoomDTO"*/-->
+            <!--/*@thymesVar id="successMessage" type="java.lang.String"*/-->
+            <!--/*@thymesVar id="errorMessage" type="java.lang.String"*/-->
+            <h1>Add new room</h1>
+            <form th:action="@{/admin/rooms}" th:object="${newRoom}" th:name="room" method="post">
+                <fieldset>
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert"
+                         th:text="${successMessage}"></div>
+
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert"
+                         th:text="${errorMessage}"></div>
+
+                    <div class="form-group">
+                        <input type="number" min="1" th:field="*{number}" class="form-control input-lg"
+                               placeholder="Number" required="required" autofocus="autofocus"/>
+                        <p th:each="error: ${#fields.errors('number')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" min="1" th:field="*{amountOfPerson}" class="form-control input-lg"
+                               placeholder="Amount of person" required="required" autofocus="autofocus"/>
+                        <p th:each="error: ${#fields.errors('amountOfPerson')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" min="1" th:field="*{price}" class="form-control input-lg"
+                               placeholder="Price" required="required" autofocus="autofocus"/>
+                        <p th:each="error: ${#fields.errors('price')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" min="1" th:field="*{bookingPrice}" class="form-control input-lg"
+                               placeholder="Price for booking" required="required" autofocus="autofocus"/>
+                        <p th:each="error: ${#fields.errors('bookingPrice')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Add Room"/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

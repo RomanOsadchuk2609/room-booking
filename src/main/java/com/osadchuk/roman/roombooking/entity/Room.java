@@ -34,7 +34,6 @@ public class Room {
     private int number;
     private int amountOfPerson;
     private double price;
-    private int type;
     private double bookingPrice;
 
     @Enumerated(EnumType.STRING)
@@ -42,5 +41,10 @@ public class Room {
 
     @JsonIgnore
     @OneToMany(mappedBy = "room")
-    protected List<Order> orders;
+    private List<Order> orders;
+
+    @JsonIgnore
+    public boolean isFree(){
+        return status.equals(RoomStatus.FREE);
+    }
 }

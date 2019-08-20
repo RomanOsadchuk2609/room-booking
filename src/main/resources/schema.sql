@@ -72,8 +72,7 @@ CREATE TABLE IF NOT EXISTS room
     booking_price    double precision not null,
     number           integer          not null,
     price            double precision not null,
-    status           varchar(255),
-    type             integer          not null
+    status           varchar(255)
 );
 
 ALTER TABLE room

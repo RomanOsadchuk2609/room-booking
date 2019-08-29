@@ -20,13 +20,6 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/home")
-    public String home(Model model) {
-        SecurityContext context = SecurityContextHolder.getContext();
-        model.addAttribute("user", context.getAuthentication().getName());
-        return "home";
-    }
-
     @RequestMapping("/login")
     public String login() {
         return "login";

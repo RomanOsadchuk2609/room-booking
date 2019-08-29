@@ -7,5 +7,6 @@ public enum OrderStatus {
     CREATED,
     IN_PROCESS,
     APPROVED,
-    REJECTED
+    REJECTED,
+    ClOSED
 }

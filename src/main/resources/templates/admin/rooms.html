@@ -18,18 +18,26 @@
             <!--/*@thymesVar id="room" type="com.osadchuk.roman.roombooking.entity.Room"*/-->
             <div th:if="${rooms}" th:each="room : ${rooms}" class="room-info"
                  th:class="${room.status.toString().equals('FREE')} ? 'room-info' : 'room-info reserved'">
-                <div style="display: flex">
-                    <a th:if="${room.isFree()}" th:href="${'/admin/rooms/delete?id=' + room.id}">
-                        <i class="fa fa-remove" style="margin-right: 10px; color: red"></i>
-                    </a>
-                    <a th:if="${room.isFree()}" th:href="${'/admin/rooms/edit?id=' + room.id}">
-                        <i class="fa fa-pencil" style="margin-right: 10px; color: blue"></i>
-                    </a>
-                    <h5 th:text="${'Room #' + room.number}"></h5>
-                </div>
-                <table>
+
+                <table style="width: -webkit-fill-available;">
+                    <thead>
                     <tr>
-                        <td style="padding-right: 50px">Amount of person:</td>
+                        <td style="width: 50%">
+                            <h5 th:text="${'Room #' + room.number}"></h5>
+                        </td>
+                        <td align="right" style="width: 50%">
+                            <a th:if="${room.isFree()}" th:href="${'/admin/rooms/delete?id=' + room.id}">
+                                <i class="fa fa-remove" style="color: red"></i>
+                            </a>
+                            <!--<a th:if="${room.isFree()}" th:href="${'/admin/rooms/edit?id=' + room.id}">
+                                <i class="fa fa-pencil" style="margin-left: 10px; color: blue"></i>
+                            </a>-->
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Amount of person:</td>
                         <td th:text="${room.amountOfPerson}"></td>
                     </tr>
                     <tr>
@@ -44,6 +52,7 @@
                         <td>Status:</td>
                         <td th:text="${room.status}"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -12,9 +12,11 @@ import java.util.List;
  * Entity which represents order table in DB
  */
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 @Table(name = "order", schema = "public")
 public class Order implements Cloneable<Order> {
     @GenericGenerator(

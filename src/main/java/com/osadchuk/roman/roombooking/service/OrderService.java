@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -63,5 +63,40 @@ public class OrderService {
         }
         return null;
     }
+
+    public List<Order> findAllByUsername(String username) {
+        return orderRepository.findAllByUserUsername(username);
+    }
+
+    public List<OrderDTO> findAllByUsernameAsDTO(String username) {
+        return orderRepository.findAllByUserUsername(username)
+                .stream()
+                .map(this::convertIntoDTO)
+                .collect(Collectors.toList());
+    }
+
+    private OrderDTO convertIntoDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(order.getId());
+        orderDTO.setRoomId(order.getRoom().getId());
+        orderDTO.setRoomNumber(order.getRoom().getNumber());
+        orderDTO.setUserId(order.getUser().getId());
+        orderDTO.setBookingDate(order.getBookingDate().toString());
+        orderDTO.setAmountOfDays(order.getBookedDays());
+        orderDTO.setAmountOfPerson(order.getAmountOfPerson());
+        orderDTO.setStatus(order.getStatus());
+        orderDTO.setIncludeBreakfast(order.isIncludedBreakfast());
+        orderDTO.setPrice(order.getPrice());
+        return orderDTO;
+    }
+
+    public void deleteById(long id){
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent() && !optionalOrder.get().getStatus().equals(OrderStatus.APPROVED)){
+            orderRepository.deleteById(id);
+        }
+    }
+
+
 }
 

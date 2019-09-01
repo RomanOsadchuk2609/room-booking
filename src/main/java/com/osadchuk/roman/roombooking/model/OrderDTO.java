@@ -1,5 +1,6 @@
 package com.osadchuk.roman.roombooking.model;
 
+import com.osadchuk.roman.roombooking.entity.OrderStatus;
 import com.osadchuk.roman.roombooking.validator.bookingDate.ValidBookingDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class OrderDTO {
+    private long id;
+
     private int amountOfPerson;
 
     @ValidBookingDate
@@ -20,5 +23,13 @@ public class OrderDTO {
 
     private long roomId;
 
+    private int roomNumber;
+
+    private long userId;
+
     private boolean enableForBooking;
+
+    private OrderStatus status;
+
+    private double price;
 }

@@ -55,6 +55,7 @@ public class OrderService {
             booking.setRoom(room.get());
             booking.setBookingDate(orderDTO.getBookingDate());
             booking.setBookedDays(orderDTO.getAmountOfDays());
+            booking.setAmountOfPerson(orderDTO.getAmountOfPerson());
             if (orderDTO.isIncludeBreakfast()) {
                 booking.includeBreakfast();
             }

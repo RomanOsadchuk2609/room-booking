@@ -30,6 +30,7 @@
                                 <input type="number" th:value="${orderDTO.amountOfPerson}" name="amountOfPerson" hidden="hidden">
                                 <input type="date" th:value="${orderDTO.bookingDate}" name="bookingDate" hidden="hidden">
                                 <input type="number" th:value="${orderDTO.amountOfDays}" name="AmountOfDays" hidden="hidden">
+                                <input type="checkbox" th:checked="${orderDTO.includeBreakfast}" name="includeBreakfast" hidden="hidden">
                                 <input type="number" th:value="${room.id}" name="roomId" hidden="hidden">
                                 <input type="submit" class="btn btn-primary" value="Book"/>
                             </form>

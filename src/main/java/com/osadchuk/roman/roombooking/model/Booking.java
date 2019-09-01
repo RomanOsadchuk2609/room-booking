@@ -4,9 +4,9 @@ import com.osadchuk.roman.roombooking.entity.Order;
 import com.osadchuk.roman.roombooking.entity.OrderStatus;
 import com.osadchuk.roman.roombooking.entity.Room;
 import com.osadchuk.roman.roombooking.entity.User;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 //TODO ORDER BUILDER
@@ -15,7 +15,6 @@ import java.util.Date;
 /**
  * Builder for order Entity. Using for booking rooms
  */
-@Component
 public class Booking {
     private static final double BREAKFAST_PRICE = 5;
 
@@ -50,7 +49,8 @@ public class Booking {
     }
 
     public void setBookingDate(String stringDate) {
-        Date bookingDate = new Date(LocalDate.parse(stringDate).toEpochDay());
+        LocalDate localDate = LocalDate.parse(stringDate);
+        Date bookingDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         order.setBookingDate(bookingDate);
     }
 
@@ -68,6 +68,10 @@ public class Booking {
         double priceForRoom = room.getPrice() * order.getBookedDays();
         double priceForBreakfast = order.isIncludedBreakfast() ? BREAKFAST_PRICE * order.getBookedDays() : 0;
         order.setPrice(priceForBooking + priceForRoom + priceForBreakfast);
+    }
+
+    public void setAmountOfPerson(int amountOfPerson) {
+        order.setAmountOfPerson(amountOfPerson);
     }
 
 }

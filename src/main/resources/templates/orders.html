@@ -10,48 +10,57 @@
     <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<h1 align="center">My orders</h1>
-<div th:if="${orders}" th:each="order : ${orders}" class="room-info"style="max-width: 800px; margin-bottom: 10px; margin-left: auto; margin-right: auto">
-    <table style="width: -webkit-fill-available; font-size: 12pt">
-        <!--/*@thymesVar id="orders" type="List<com.osadchuk.roman.roombooking.model.OrderDTO>"*/-->
-        <!--/*@thymesVar id="order" type="com.osadchuk.roman.roombooking.model.OrderDTO"*/-->
-        <thead>
-        <tr>
-            <td style="width: 50%">
-                <h5 th:text="${'Room #' + order.roomNumber}"></h5>
-            </td>
-            <td align="right" style="width: 50%">
-                <a th:if="${!order.status.toString().equals('APPROVED')}" class="btn btn-primary" th:href="'/orders/delete?id='+${order.id}">Delete</a>
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Booking Date:</td>
-            <td th:text="${order.bookingDate}"></td>
-        </tr>
-        <tr>
-            <td>Amount of days:</td>
-            <td th:text="${order.amountOfDays}"></td>
-        </tr>
-        <tr>
-            <td>Amount of person:</td>
-            <td th:text="${order.amountOfPerson}"></td>
-        </tr>
-        <tr>
-            <td>Include breakfast:</td>
-            <td th:text="${order.includeBreakfast}"></td>
-        </tr>
-        <tr>
-            <td>Price:</td>
-            <td th:text="${order.price + '$'}"></td>
-        </tr>
-        <tr>
-            <td>Status:</td>
-            <td th:text="${order.status}"></td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row" style="padding: 15px">
+        <a th:href="@{/booking}" class="btn btn-primary" style="margin-right: 10px">Rooms Management</a>
+        <a th:href="@{/orders}" class="btn btn-success">Orders Management</a>
+    </div>
+    <!--/*@thymesVar id="orders" type="List<com.osadchuk.roman.roombooking.model.OrderDTO>"*/-->
+    <!--/*@thymesVar id="order" type="com.osadchuk.roman.roombooking.model.OrderDTO"*/-->
+    <h1 align="center">My orders</h1>
+    <h4 align="center" th:if="${orders.size()==0}" style="color: grey;">You do not have any orders</h4>
+    <div th:if="${orders}" th:each="order : ${orders}" class="room-info"
+         style="max-width: 800px; margin-bottom: 10px; margin-left: auto; margin-right: auto">
+        <table style="width: -webkit-fill-available; font-size: 12pt">
+            <thead>
+            <tr>
+                <td style="width: 50%">
+                    <h5 th:text="${'Room #' + order.roomNumber}"></h5>
+                </td>
+                <td align="right" style="width: 50%">
+                    <a th:if="${!order.status.toString().equals('APPROVED')}" class="btn btn-primary"
+                       th:href="'/orders/delete?id='+${order.id}">Delete</a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Booking Date:</td>
+                <td th:text="${order.bookingDate}"></td>
+            </tr>
+            <tr>
+                <td>Amount of days:</td>
+                <td th:text="${order.amountOfDays}"></td>
+            </tr>
+            <tr>
+                <td>Amount of person:</td>
+                <td th:text="${order.amountOfPerson}"></td>
+            </tr>
+            <tr>
+                <td>Include breakfast:</td>
+                <td th:text="${order.includeBreakfast}"></td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td th:text="${order.price + '$'}"></td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td th:text="${order.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

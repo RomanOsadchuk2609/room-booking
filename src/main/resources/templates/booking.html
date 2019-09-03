@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <title>Room Booking</title>
 
@@ -11,6 +13,10 @@
 </head>
 <body>
 <div class="container">
+    <div class="row" style="padding: 15px">
+        <a th:href="@{/booking}" class="btn btn-primary" style="margin-right: 10px">Booking</a>
+        <a th:href="@{/orders}" class="btn btn-success">My Orders</a>
+    </div>
     <div class="row">
         <!--/*@thymesVar id="orderDTO" type="com.osadchuk.roman.roombooking.model.OrderDTO"*/-->
         <div class="col-md-7">
@@ -27,10 +33,14 @@
                         <td align="right" style="width: 50%">
                             <form th:if="${orderDTO.enableForBooking}" th:action="@{/booking/bookRoom}" th:method="post"
                                   th:object="${orderDTO}" th:name="orderDTO">
-                                <input type="number" th:value="${orderDTO.amountOfPerson}" name="amountOfPerson" hidden="hidden">
-                                <input type="date" th:value="${orderDTO.bookingDate}" name="bookingDate" hidden="hidden">
-                                <input type="number" th:value="${orderDTO.amountOfDays}" name="AmountOfDays" hidden="hidden">
-                                <input type="checkbox" th:checked="${orderDTO.includeBreakfast}" name="includeBreakfast" hidden="hidden">
+                                <input type="number" th:value="${orderDTO.amountOfPerson}" name="amountOfPerson"
+                                       hidden="hidden">
+                                <input type="date" th:value="${orderDTO.bookingDate}" name="bookingDate"
+                                       hidden="hidden">
+                                <input type="number" th:value="${orderDTO.amountOfDays}" name="AmountOfDays"
+                                       hidden="hidden">
+                                <input type="checkbox" th:checked="${orderDTO.includeBreakfast}" name="includeBreakfast"
+                                       hidden="hidden">
                                 <input type="number" th:value="${room.id}" name="roomId" hidden="hidden">
                                 <input type="submit" class="btn btn-primary" value="Book"/>
                             </form>
@@ -91,11 +101,12 @@
                     </div>
 
                     <div align="center" class="form-check" style="margin-bottom: 10px">
-                        <input id="includeBreakfast" type="checkbox" class="form-check-input" th:field="*{includeBreakfast}"
+                        <input id="includeBreakfast" type="checkbox" class="form-check-input"
+                               th:field="*{includeBreakfast}"
                                equired="required" autofocus="autofocus" style="width: 16px; height: 16px;"/>
                         <label for="includeBreakfast" class="form-check-label">Include breakfast</label>
-                       <!-- <p th:each="error: ${#fields.errors('bookingPrice')}"
-                           th:text="${error}">Validation error</p>-->
+                        <!-- <p th:each="error: ${#fields.errors('bookingPrice')}"
+                            th:text="${error}">Validation error</p>-->
                     </div>
 
                     <div class="form-group">

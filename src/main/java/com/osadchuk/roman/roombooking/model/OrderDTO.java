@@ -27,6 +27,10 @@ public class OrderDTO {
 
     private long userId;
 
+    private String user;
+
+    private String phoneNumber;
+
     private boolean enableForBooking;
 
     private OrderStatus status;

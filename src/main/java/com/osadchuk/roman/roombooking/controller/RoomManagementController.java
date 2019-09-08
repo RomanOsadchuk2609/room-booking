@@ -15,11 +15,11 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/rooms")
-public class RoomController {
+public class RoomManagementController {
     private final RoomService roomService;
 
     @Autowired
-    public RoomController(RoomService roomService) {
+    public RoomManagementController(RoomService roomService) {
         this.roomService = roomService;
     }
 

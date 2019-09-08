@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,15 +68,44 @@ public class OrderService {
         return null;
     }
 
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
+    public List<OrderDTO> findAllAsDTO() {
+        List<OrderDTO> orderDTOList = convertIntoDTO(findAll());
+        orderDTOList.sort(Comparator.comparing(OrderDTO::getStatus));
+        return orderDTOList;
+    }
+
+    public void deleteById(long id) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent() && !optionalOrder.get().getStatus().equals(OrderStatus.APPROVED)) {
+            orderRepository.deleteById(id);
+        }
+    }
+
     public List<Order> findAllByUsername(String username) {
         return orderRepository.findAllByUserUsername(username);
     }
 
     public List<OrderDTO> findAllByUsernameAsDTO(String username) {
-        return orderRepository.findAllByUserUsername(username)
-                .stream()
-                .map(this::convertIntoDTO)
-                .collect(Collectors.toList());
+        List<OrderDTO> orderDTOList = convertIntoDTO(orderRepository.findAllByUserUsername(username));
+        orderDTOList.sort(Comparator.comparing(OrderDTO::getStatus));
+        return orderDTOList;
+    }
+
+    public void updateStatus(long id, OrderStatus status) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            order.setStatus(status);
+            orderRepository.save(order);
+        }
+    }
+
+    private List<OrderDTO> convertIntoDTO(List<Order> orders) {
+        return orders.stream().map(this::convertIntoDTO).collect(Collectors.toList());
     }
 
     private OrderDTO convertIntoDTO(Order order) {
@@ -82,20 +114,15 @@ public class OrderService {
         orderDTO.setRoomId(order.getRoom().getId());
         orderDTO.setRoomNumber(order.getRoom().getNumber());
         orderDTO.setUserId(order.getUser().getId());
+        orderDTO.setUser(order.getUser().getFirstName() + " " + order.getUser().getLastName());
         orderDTO.setBookingDate(order.getBookingDate().toString());
         orderDTO.setAmountOfDays(order.getBookedDays());
         orderDTO.setAmountOfPerson(order.getAmountOfPerson());
         orderDTO.setStatus(order.getStatus());
         orderDTO.setIncludeBreakfast(order.isIncludedBreakfast());
         orderDTO.setPrice(order.getPrice());
+        orderDTO.setPhoneNumber(order.getUser().getPhoneNumber());
         return orderDTO;
-    }
-
-    public void deleteById(long id){
-        Optional<Order> optionalOrder = orderRepository.findById(id);
-        if (optionalOrder.isPresent() && !optionalOrder.get().getStatus().equals(OrderStatus.APPROVED)){
-            orderRepository.deleteById(id);
-        }
     }
 
 

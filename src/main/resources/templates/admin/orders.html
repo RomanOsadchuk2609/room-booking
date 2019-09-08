@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Room Booking</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row" style="padding: 15px">
+        <a th:href="@{/admin/rooms}" class="btn btn-primary" style="margin-right: 10px">Rooms Management</a>
+        <a th:href="@{/admin/orders}" class="btn btn-success">Orders Management</a>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Room #</th>
+                <th>Booking Date</th>
+                <th>Amount of Days</th>
+                <th>Breakfast</th>
+                <th>Price</th>
+                <th>User</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="orders" type="java.util.List<osadchuk.roman.roombooking.model.OrderDTO>"*/-->
+            <!--/*@thymesVar id="order" type="osadchuk.roman.roombooking.model.OrderDTO"*/-->
+            <tr th:each="order : ${orders}" th:object="${order}" th:class="${order.status.toString().toLowerCase()}">
+                <td th:text="${order.roomNumber}"></td>
+                <td th:text="${order.bookingDate}"></td>
+                <td th:text="${order.amountOfDays}"></td>
+                <td th:text="${order.includeBreakfast} ? 'Included' : 'Not included'"></td>
+                <td th:text="${order.price} + '$'"></td>
+                <td th:text="${order.user}"></td>
+                <td th:text="${order.phoneNumber}"></td>
+                <td>
+                    <select th:id="'status-select' + ${order.id}">
+                        <option th:each="status : ${T(com.osadchuk.roman.roombooking.entity.OrderStatus).values()}"
+                                th:value="${status}"
+                                th:text="${status}" th:selected="${status.equals(order.status)} ? 'selected'">
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <a th:id="'update-order' + ${order.id}" class="update-order" th:attr="orderId = ${order.id}" href="#">
+                        <i class="fa fa-save fa-2x" style="color: #343a40"></i>
+                    </a>
+
+                    <script type="text/javascript">
+                        $('.update-order').click(function () {
+                            console.log('click');
+                            var id = $(this).attr('orderId');
+                            var status = document.getElementById('status-select'+id).value;
+                            console.log('id = ' + id + ', status = ' + status);
+                            $.ajax({
+                                url: "/admin/orders/",
+                                type: "post",
+                                data: {id: id, status: status},
+                                success: function (response) {
+                                    window.location = "/admin/orders";
+                                }
+                            });
+                        });
+                    </script>
+                    <a th:href="'/admin/orders/delete?id=' + ${order.id}" style="margin-left: 10px;">
+                        <i class="fa fa-remove fa-2x" style="color: red"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

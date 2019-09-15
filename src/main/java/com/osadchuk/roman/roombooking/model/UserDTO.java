@@ -1,6 +1,7 @@
 package com.osadchuk.roman.roombooking.model;
 
 import com.osadchuk.roman.roombooking.validator.name.ValidName;
+import com.osadchuk.roman.roombooking.validator.password.ValidNewPassword;
 import com.osadchuk.roman.roombooking.validator.password.ValidPassword;
 import com.osadchuk.roman.roombooking.validator.phoneNumber.ValidPhoneNumber;
 import com.osadchuk.roman.roombooking.validator.username.ValidUsername;
@@ -32,6 +33,10 @@ public class UserDTO {
     @ValidPassword
     private String password;
 
-    @ValidPassword
     private String confirmPassword;
+
+    @ValidNewPassword
+    private String newPassword;
+
+    private String error;
 }

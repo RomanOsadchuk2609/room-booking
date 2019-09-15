@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 //TODO: CHAIN OF RESPONSIBILITY
+
 /**
  * Controller for user registration
  */
@@ -47,24 +48,12 @@ public class RegistrationController {
     public String registration(Model model, @ModelAttribute("user") @Valid UserDTO userDTO,
                                BindingResult result, WebRequest request, Errors errors) {
         if (!result.hasErrors()) {
-            if (userExistsHandler.handle(userDTO)){
+            if (userExistsHandler.handle(userDTO)) {
                 userService.registerUser(userDTO);
                 model.addAttribute("successMessage", "User was registered");
             } else {
                 model.addAttribute("errorMessage", userExistsHandler.getMessage());
-
             }
-
-            /*if (!userService.isUserAlreadyExists(userDTO.getUsername())) {
-                if (userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-                    userService.registerUser(userDTO);
-                    model.addAttribute("successMessage", "User was registered");
-                } else {
-                    model.addAttribute("errorMessage", "Password doesn't matches");
-                }
-            } else {
-                model.addAttribute("errorMessage", "User with username " + userDTO.getUsername() + " already exists");
-            }*/
         }
         return "/registration";
     }
